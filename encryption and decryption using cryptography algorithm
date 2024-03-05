@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Encrypt and Decrypt Text</title>
+	<style>
+		.container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+		
+		input[type="text"] {
+			flex-grow: 1;
+			padding: 5px;
+			margin-right: 10px;
+		}
+		
+		button {
+			padding: 5px 10px;
+			background-color: blue;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		
+		.output {
+			margin-top: 20px;
+			border: 1px solid black;
+			padding: 10px;
+			font-family: monospace;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<input type="text" id="inputText" placeholder="Enter text here">
+		<button id="encryptButton">Encrypt</button>
+		<button id="decryptButton">Decrypt</button>
+	</div>
+	
+	<div class="output" id="output"></div>
+	
+	<script>
+		const inputText = document.getElementById("inputText");
+		const encryptButton = document.getElementById("encryptButton");
+		const decryptButton = document.getElementById("decryptButton");
+		const output = document.getElementById("output");
+
+		const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+		encryptButton.addEventListener("click", () => {
+			let encryptedText = "";
+			for (let i = 0; i < inputText.value.length; i++) {
+				const charIndex = alphabet.indexOf(inputText.value[i]);
+				const newCharIndex = (charIndex + 1) % alphabet.length;
+				encryptedText += alphabet[newCharIndex];
+			}
+			output.textContent = encryptedText;
+		});
+
+		decryptButton.addEventListener("click", () => {
+			let decryptedText = "";
+			for (let i = 0; i < inputText.value.length; i++) {
+				const charIndex = alphabet.indexOf(inputText.value[i]);
+				const newCharIndex = (charIndex - 1 + alphabet.length) % alphabet.length;
+				decryptedText += alphabet[newCharIndex];
+			}
+			output.textContent = decryptedText;
+		});
+	</script>
+</body>
+</html>
