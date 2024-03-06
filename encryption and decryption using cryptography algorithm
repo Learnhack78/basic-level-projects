@@ -1,74 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Encrypt and Decrypt Text</title>
-	<style>
-		.container {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 20px;
-		}
-		
-		input[type="text"] {
-			flex-grow: 1;
-			padding: 5px;
-			margin-right: 10px;
-		}
-		
-		button {
-			padding: 5px 10px;
-			background-color: blue;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-		
-		.output {
-			margin-top: 20px;
-			border: 1px solid black;
-			padding: 10px;
-			font-family: monospace;
-		}
-	</style>
-</head>
-<body>
-	<div class="container">
-		<input type="text" id="inputText" placeholder="Enter text here">
-		<button id="encryptButton">Encrypt</button>
-		<button id="decryptButton">Decrypt</button>
-	</div>
-	
-	<div class="output" id="output"></div>
-	
-	<script>
-		const inputText = document.getElementById("inputText");
-		const encryptButton = document.getElementById("encryptButton");
-		const decryptButton = document.getElementById("decryptButton");
-		const output = document.getElementById("output");
+from tkinter import *
+import base64
 
-		const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+def encrypt():
+    password = code.get()
+    if password == "":
+        messagebox.showerror("error", "please enter the secret key")
+    elif password != "1234":
+        messagebox.showerror("oops", "invalid secret key")
+    else:
+        message = text1.get(1.0, END)
+        encode_message = message.encode("ascii")
+        base64_bytes = base64.b64encode(encode_message)
+        encrypt_text = base64_bytes.decode("ascii")
 
-		encryptButton.addEventListener("click", () => {
-			let encryptedText = "";
-			for (let i = 0; i < inputText.value.length; i++) {
-				const charIndex = alphabet.indexOf(inputText.value[i]);
-				const newCharIndex = (charIndex + 1) % alphabet.length;
-				encryptedText += alphabet[newCharIndex];
-			}
-			output.textContent = encryptedText;
-		});
+        screen1 = Toplevel(screen)
+        screen1.title("encryption")
+        screen1.geometry("400x250")
+        screen1.configure(bg="pink")
 
-		decryptButton.addEventListener("click", () => {
-			let decryptedText = "";
-			for (let i = 0; i < inputText.value.length; i++) {
-				const charIndex = alphabet.indexOf(inputText.value[i]);
-				const newCharIndex = (charIndex - 1 + alphabet.length) % alphabet.length;
-				decryptedText += alphabet[newCharIndex];
-			}
-			output.textContent = decryptedText;
-		});
-	</script>
-</body>
-</html>
+        Label(screen1, text="code is encrypted", font="impack 10 bold").place(x=5, y=6)
+        text2 = Text(screen1, font="30", bd=4, wrap=WORD)
+        text2.place(x=2, y=30, width=390, height=180)
+        text2.insert(END, encrypt_text)
+
+def decrypt():
+    password = code.get()
+    if password == "":
+        messagebox.showerror("error", "please enter the secret key")
+    elif password != "1234":
+        messagebox.showerror("oops", "invalid secret key")
+    else:
+        message = text1.get(1.0, END)
+        encode_message = message.encode("ascii")
+        base64_bytes = base64.b64decode(encode_message)
+        decrypt_text = base64_bytes.decode("ascii")
+
+        screen2 = Toplevel(screen)
+        screen2.title("decryption")
+        screen2.geometry("400x250")
+        screen2.configure(bg="green")
+
+        Label(screen2, text="code is decrypted", font="impack 10 bold").place(x=5, y=6)
+        text2 = Text(screen2, font="30", bd=4, wrap=WORD)
+        text2.place(x=2, y=30, width=390, height=180)
+        text2.insert(END, decrypt_text)
+
+def reset():
+    text1.delete(1.0, END)
+    code.set("")
+
+screen = Tk()
+screen.geometry("400x400")
+
+label = Label(screen, text="enter the text from encryption and decryption", font="impack 14 bold")
+label.place(x=5, y=6)
+
+text1 = Text(screen, font="20")
+text1.place(x=5, y=45, width=410, height=120)
+
+code = StringVar()
+Entry(screen, textvariable=code, bd=4, font="20", show="*").place(x=110, y=220)
+
+Button(screen, text="encryption", font="arial 15 bold", bg="red", fg="white", command=encrypt).place(x=15, y=280, width=180)
+Button(screen, text="decryption", font="arial 15 bold", bg="green", fg="white", command=decrypt).place(x=220, y=280, width=180)
+Button(screen, text="reset", font="arial 15 bold", bg="blue", fg="white", command=reset).place(x=60, y=350, width=280)
+
+screen.mainloop()
